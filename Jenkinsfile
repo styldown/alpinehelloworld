@@ -23,7 +23,7 @@ pipeline {
                  sh '''
 			echo "Clean Environment"
 			docker rm -f ${IMAGE_NAME} || echo "container does not exist"
-			docker run -d -p 80:5000 -e PORT=5000 --name ${IMAGE_NAME} ${ID_DOCKER }/${IMAGE_NAME}:${IMAGE_TAG} 
+			docker run -d -p 80:5000 -e PORT=5000 --name ${IMAGE_NAME} ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG} 
 			sleep 5
                  '''
                }
@@ -58,7 +58,7 @@ pipeline {
              script {
                sh '''
 			docker login -u "lamtara" -p ${Pass_DockerHub}
-			docker push  ${ID_DOCKER }/${IMAGE_NAME}:${IMAGE_TAG}
+			docker push  ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}
                '''
              }
           }
