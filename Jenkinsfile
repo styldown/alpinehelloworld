@@ -1,6 +1,6 @@
 pipeline {
      environment {
-       ID_DOCKER = "jonastrochet369"
+       ID_DOCKER = "lamtara"
        IMAGE_NAME = "alpinehelloworld"
        IMAGE_TAG = "latest"
        STAGING = "${ID_DOCKER}-staging"
@@ -21,7 +21,8 @@ pipeline {
             steps {
                script {
                  sh '''
-			docker rm ${IMAGE_NAME}
+			echo "Clean Environment"
+			docker rm -f ${IMAGE_NAME} || echo "container does not exist"
 			docker run -d -p 80:5000 -e PORT=5000 --name ${IMAGE_NAME} ${ID_DockerHub}/${IMAGE_NAME}:${IMAGE_TAG} 
 			sleep 5
                  '''
@@ -65,7 +66,7 @@ pipeline {
      
      stage('Push image in staging and deploy it') {
        when {
-              expression { GIT_BRANCH == 'origin/main' }
+              expression { GIT_BRANCH == 'origin/master' }
             }
       agent any
       environment {
