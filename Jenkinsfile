@@ -10,6 +10,7 @@ pipeline {
      stages {
          stage('Build image') {
              agent any
+		 
              steps {
                 script {
                   sh 'docker build -t ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG} .'
@@ -54,11 +55,14 @@ pipeline {
 
      stage ('Login and Push Image on docker hub') {
           agent any
+        environment {
+           DOCKERHUB_PASSWORD  = credentials('dockerhub')
+        }            
           steps {
              script {
                sh '''
-			docker login -u "lamtara" -p ${Pass_DockerHub}
-			docker push  ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}
+                   echo $DOCKERHUB_PASSWORD_PSW | docker login -u $ID_DOCKER --password-stdin
+                   docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
                '''
              }
           }
